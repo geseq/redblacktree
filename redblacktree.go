@@ -274,6 +274,51 @@ func (tree *Tree) Ceiling(key KeyType) (ceiling *Node, found bool) {
 	return nil, false
 }
 
+// GreatestLessThan finds largest node that is smaller than the given node.
+// A node may not be found, either because the tree is empty, or because
+// all nodes in the tree are larger than or equal to the given node.
+//
+// Key should adhere to the comparator's type assertion, otherwise method panics.
+func (tree *Tree) LargestLessThan(key KeyType) (floor *Node, found bool) {
+	found = false
+	node := tree.Root
+	for node != nil {
+		if tree.Comparator(key, node.Key) > 0 {
+			floor, found = node, true
+			node = node.Right
+		} else {
+			node = node.Left
+		}
+	}
+	if found {
+		return floor, true
+	}
+	return nil, false
+}
+
+// Ceiling finds the smallest node that is larger than to the given node.
+// A node may not be found, either because the tree is empty, or because
+// all nodes in the tree are smaller than the given node.
+//
+// Key should adhere to the comparator's type assertion, otherwise method panics.
+func (tree *Tree) SmallestGreaterThan(key KeyType) (ceiling *Node, found bool) {
+	found = false
+	node := tree.Root
+	for node != nil {
+		if tree.Comparator(key, node.Key) < 0 {
+			ceiling, found = node, true
+			node = node.Left
+		} else {
+			node = node.Right
+		}
+	}
+
+	if found {
+		return ceiling, true
+	}
+	return nil, false
+}
+
 // GetMin gets the min value and flag if found
 func (tree *Tree) GetMin() (node *Node, found bool) {
 	return tree.Min, tree.Min != nil
