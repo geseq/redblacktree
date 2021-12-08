@@ -280,6 +280,12 @@ func TestRedBlackTreeCeilingAndFloor(t *testing.T) {
 	if node, found := tree.Ceiling(0); node != nil || found {
 		t.Errorf("Got %v expected %v", node, "<nil>")
 	}
+	if node, found := tree.LargestLessThan(0); node != nil || found {
+		t.Errorf("Got %v expected %v", node, "<nil>")
+	}
+	if node, found := tree.SmallestGreaterThan(0); node != nil || found {
+		t.Errorf("Got %v expected %v", node, "<nil>")
+	}
 
 	tree.Put(5, "e")
 	tree.Put(6, "f")
@@ -296,12 +302,27 @@ func TestRedBlackTreeCeilingAndFloor(t *testing.T) {
 		t.Errorf("Got %v expected %v", node, "<nil>")
 	}
 
+	if node, found := tree.LargestLessThan(4); node.Key != 3 || !found {
+		t.Errorf("Got %v expected %v", node.Key, 3)
+	}
+	if node, found := tree.LargestLessThan(1); node != nil || found {
+		t.Errorf("Got %v expected %v", node, "<nil>")
+	}
+
 	if node, found := tree.Ceiling(4); node.Key != 4 || !found {
 		t.Errorf("Got %v expected %v", node.Key, 4)
 	}
 	if node, found := tree.Ceiling(8); node != nil || found {
 		t.Errorf("Got %v expected %v", node, "<nil>")
 	}
+
+	if node, found := tree.SmallestGreaterThan(4); node.Key != 5 || !found {
+		t.Errorf("Got %v expected %v", node.Key, 5)
+	}
+	if node, found := tree.SmallestGreaterThan(7); node != nil || found {
+		t.Errorf("Got %v expected %v", node, "<nil>")
+	}
+
 }
 
 func TestRedBlackTreeIteratorNextOnEmpty(t *testing.T) {
